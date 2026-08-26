@@ -1,4 +1,4 @@
-package com.nirmaansetu.notification.domain.events;
+package com.nirmaansetu.events;
 
 import java.util.UUID;
 

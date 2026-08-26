@@ -1,12 +1,13 @@
 package com.nirmaansetu.notification.application;
 
+import com.nirmaansetu.events.BookingCreatedEvent;
+import com.nirmaansetu.events.BookingStatusChangedEvent;
+import com.nirmaansetu.events.RequirementFulfilledEvent;
+import com.nirmaansetu.events.VerificationReviewedEvent;
 import com.nirmaansetu.notification.domain.NotificationType;
-import com.nirmaansetu.notification.domain.events.BookingCreatedEvent;
-import com.nirmaansetu.notification.domain.events.BookingStatusChangedEvent;
-import com.nirmaansetu.notification.domain.events.RequirementFulfilledEvent;
-import com.nirmaansetu.notification.domain.events.VerificationReviewedEvent;
-import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.event.TransactionPhase;
+import org.springframework.transaction.event.TransactionalEventListener;
 
 @Component
 public class NotificationEventListener {
@@ -17,7 +18,7 @@ public class NotificationEventListener {
         this.notificationService = notificationService;
     }
 
-    @EventListener
+    @TransactionalEventListener(phase = TransactionPhase.AFTER_COMMIT)
     public void handleBookingCreated(BookingCreatedEvent event) {
         notificationService.createNotification(
                 event.recipientUserId(),
@@ -29,7 +30,7 @@ public class NotificationEventListener {
         );
     }
 
-    @EventListener
+    @TransactionalEventListener(phase = TransactionPhase.AFTER_COMMIT)
     public void handleBookingStatusChanged(BookingStatusChangedEvent event) {
         NotificationType type = "ACCEPTED".equalsIgnoreCase(event.status()) ? NotificationType.BOOKING_ACCEPTED : NotificationType.BOOKING_REJECTED;
         String title = "ACCEPTED".equalsIgnoreCase(event.status()) ? "Booking Accepted" : "Booking Rejected";
@@ -45,7 +46,7 @@ public class NotificationEventListener {
         );
     }
 
-    @EventListener
+    @TransactionalEventListener(phase = TransactionPhase.AFTER_COMMIT)
     public void handleVerificationReviewed(VerificationReviewedEvent event) {
         NotificationType type = "VERIFIED".equalsIgnoreCase(event.status()) ? NotificationType.VERIFICATION_APPROVED : NotificationType.VERIFICATION_REJECTED;
         String title = "VERIFIED".equalsIgnoreCase(event.status()) ? "Verification Approved" : "Verification Rejected";
@@ -63,7 +64,7 @@ public class NotificationEventListener {
         );
     }
 
-    @EventListener
+    @TransactionalEventListener(phase = TransactionPhase.AFTER_COMMIT)
     public void handleRequirementFulfilled(RequirementFulfilledEvent event) {
         notificationService.createNotification(
                 event.recipientUserId(),
