@@ -1,7 +1,7 @@
 # Team API
 
 ## Purpose
-Manages structured worker teams, team lead assignments, and worker team memberships.
+Manages structured worker teams and worker team memberships.
 
 ## Authentication
 Required (`Authorization: Bearer <sessionToken>`) for all endpoints.
@@ -15,7 +15,7 @@ Required (`Authorization: Bearer <sessionToken>`) for all endpoints.
 
 ### POST /api/teams
 
-**Purpose**: Creates a new team owned by the contractor.
+**Purpose**: Creates a new team managed by the contractor user.
 
 **Authentication**: Required
 
@@ -25,20 +25,30 @@ Required (`Authorization: Bearer <sessionToken>`) for all endpoints.
 ```json
 {
   "name": "Masonry Team Alpha",
-  "specialization": "Masonry",
-  "city": "Mumbai"
+  "description": "Specialized masonry squad for wall and flooring work."
 }
 ```
 
 **Response**:
 - Status: `201 Created`
-- Body: Team response object.
+- Body:
+```json
+{
+  "id": "123e4567-e89b-12d3-a456-426614174000",
+  "managerUserId": "987e6543-e89b-12d3-a456-426614174000",
+  "name": "Masonry Team Alpha",
+  "description": "Specialized masonry squad for wall and flooring work.",
+  "status": "ACTIVE",
+  "createdAt": "2026-08-26T10:00:00Z",
+  "updatedAt": "2026-08-26T10:00:00Z"
+}
+```
 
 ---
 
 ### GET /api/teams
 
-**Purpose**: Returns all teams owned by the authenticated contractor.
+**Purpose**: Returns all teams managed by the authenticated contractor user.
 
 **Authentication**: Required
 
@@ -46,7 +56,7 @@ Required (`Authorization: Bearer <sessionToken>`) for all endpoints.
 
 **Response**:
 - Status: `200 OK`
-- Body: Array of Team response objects.
+- Body: `List<TeamResponse>`
 
 ---
 
@@ -56,33 +66,33 @@ Required (`Authorization: Bearer <sessionToken>`) for all endpoints.
 
 **Authentication**: Required
 
-**Required Role**: `CONTRACTOR` (Must be team owner)
+**Required Role**: `CONTRACTOR` (Must be team manager)
 
 **Response**:
 - Status: `200 OK`
+- Body: TeamResponse object.
 
 ---
 
 ### PUT /api/teams/{teamId}
 
-**Purpose**: Updates team metadata or availability status.
+**Purpose**: Updates team metadata.
 
 **Authentication**: Required
 
-**Required Role**: `CONTRACTOR` (Must be team owner)
+**Required Role**: `CONTRACTOR` (Must be team manager)
 
 **Request**:
 ```json
 {
   "name": "Masonry Team Alpha Updated",
-  "specialization": "Masonry & Plaster",
-  "city": "Navi Mumbai",
-  "available": true
+  "description": "Masonry and plastering team."
 }
 ```
 
 **Response**:
 - Status: `200 OK`
+- Body: TeamResponse object.
 
 ---
 
@@ -92,42 +102,48 @@ Required (`Authorization: Bearer <sessionToken>`) for all endpoints.
 
 **Authentication**: Required
 
-**Required Role**: `CONTRACTOR` (Must be team owner)
+**Required Role**: `CONTRACTOR` (Must be team manager)
 
 **Request**:
 ```json
 {
   "workerProfileId": "123e4567-e89b-12d3-a456-426614174000",
-  "roleInTeam": "MASON",
-  "startsOn": "2026-09-01"
+  "startsOn": "2026-09-01",
+  "endsOn": null
 }
 ```
 
 **Response**:
 - Status: `201 Created`
+- Body: TeamMemberResponse object.
 
 ---
 
 ### GET /api/teams/{teamId}/members
 
-**Purpose**: Lists active members in a team.
+**Purpose**: Lists all member records in a team.
 
 **Authentication**: Required
 
-**Required Role**: `CONTRACTOR` (Must be team owner)
+**Required Role**: `CONTRACTOR` (Must be team manager)
 
 **Response**:
 - Status: `200 OK`
+- Body: `List<TeamMemberResponse>`
 
 ---
 
 ### POST /api/teams/{teamId}/members/{workerProfileId}/end
 
-**Purpose**: Ends worker membership in a team.
+**Purpose**: Ends worker membership in a team by setting an `endsOn` date (Non-destructive).
 
 **Authentication**: Required
 
-**Required Role**: `CONTRACTOR` (Must be team owner)
+**Required Role**: `CONTRACTOR` (Must be team manager)
+
+**Path Parameters**:
+- `teamId` (UUID): Team ID.
+- `workerProfileId` (UUID): Worker Profile ID.
 
 **Query Parameters**:
 - `startsOn` (ISO Date, required)
@@ -135,3 +151,4 @@ Required (`Authorization: Bearer <sessionToken>`) for all endpoints.
 
 **Response**:
 - Status: `200 OK`
+- Body: Updated TeamMemberResponse object.

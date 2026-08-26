@@ -24,15 +24,26 @@ Required (`Authorization: Bearer <sessionToken>`) for all endpoints.
 **Request**:
 ```json
 {
-  "fullName": "Anil Sharma",
-  "companyName": "Sharma Real Estate",
-  "city": "Bengaluru"
+  "clientType": "BUILDER",
+  "displayName": "Sharma Builders & Developers"
 }
 ```
 
+*Supported `clientType` Enum Values*: `HOMEOWNER`, `BUILDER`, `BUSINESS`, `OTHER`.
+
 **Response**:
 - Status: `201 Created`
-- Body: Client profile object.
+- Body:
+```json
+{
+  "id": "123e4567-e89b-12d3-a456-426614174000",
+  "userId": "987e6543-e89b-12d3-a456-426614174000",
+  "clientType": "BUILDER",
+  "displayName": "Sharma Builders & Developers",
+  "createdAt": "2026-08-26T10:00:00Z",
+  "updatedAt": "2026-08-26T10:00:00Z"
+}
+```
 
 ---
 
@@ -46,6 +57,7 @@ Required (`Authorization: Bearer <sessionToken>`) for all endpoints.
 
 **Response**:
 - Status: `200 OK`
+- Body: Client profile response object.
 
 ---
 
@@ -60,11 +72,11 @@ Required (`Authorization: Bearer <sessionToken>`) for all endpoints.
 **Request**:
 ```json
 {
-  "fullName": "Anil Sharma",
-  "companyName": "Sharma Builders & Developers",
-  "city": "Bengaluru"
+  "clientType": "BUILDER",
+  "displayName": "Sharma Builders Pvt Ltd"
 }
 ```
 
 **Response**:
 - Status: `200 OK`
+- Body: Updated client profile response object.

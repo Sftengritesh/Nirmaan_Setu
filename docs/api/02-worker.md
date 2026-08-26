@@ -24,10 +24,13 @@ Required (`Authorization: Bearer <sessionToken>`) for all endpoints.
 **Request**:
 ```json
 {
-  "fullName": "Ramesh Kumar",
-  "dailyWageRate": 850.00,
+  "displayName": "Ramesh Kumar",
+  "location": "Mumbai",
+  "availabilityStatus": "AVAILABLE",
   "experienceYears": 5,
-  "locationCity": "Mumbai"
+  "dailyRate": 850.00,
+  "profileDescription": "Experienced mason specializing in residential projects.",
+  "isTravelWilling": true
 }
 ```
 
@@ -38,18 +41,22 @@ Required (`Authorization: Bearer <sessionToken>`) for all endpoints.
 {
   "id": "123e4567-e89b-12d3-a456-426614174000",
   "userId": "987e6543-e89b-12d3-a456-426614174000",
-  "fullName": "Ramesh Kumar",
-  "dailyWageRate": 850.00,
+  "displayName": "Ramesh Kumar",
   "experienceYears": 5,
-  "locationCity": "Mumbai",
-  "available": true,
-  "skills": []
+  "location": "Mumbai",
+  "availabilityStatus": "AVAILABLE",
+  "dailyRate": 850.00,
+  "profileDescription": "Experienced mason specializing in residential projects.",
+  "isTravelWilling": true,
+  "skills": [],
+  "createdAt": "2026-08-26T10:00:00Z",
+  "updatedAt": "2026-08-26T10:00:00Z"
 }
 ```
 
 **Possible Errors**:
-- `400 Bad Request`: Validation failure.
-- `409 Conflict`: Worker profile already exists for user.
+- `400 Bad Request`: `{"code": "INVALID_REQUEST", "message": "Invalid request data."}`
+- `422 Unprocessable Entity`: `{"code": "WORKER_PROFILE_ERROR", "message": "Worker profile already exists for user"}`
 
 ---
 
@@ -65,7 +72,7 @@ Required (`Authorization: Bearer <sessionToken>`) for all endpoints.
 
 **Response**:
 - Status: `200 OK`
-- Body: Worker profile object.
+- Body: Worker profile response object.
 
 ---
 
@@ -80,16 +87,19 @@ Required (`Authorization: Bearer <sessionToken>`) for all endpoints.
 **Request**:
 ```json
 {
-  "fullName": "Ramesh Kumar",
-  "dailyWageRate": 900.00,
+  "displayName": "Ramesh Kumar",
+  "location": "Pune",
+  "availabilityStatus": "BUSY",
   "experienceYears": 6,
-  "locationCity": "Pune",
-  "available": false
+  "dailyRate": 900.00,
+  "profileDescription": "Senior mason specializing in commercial and residential projects.",
+  "isTravelWilling": false
 }
 ```
 
 **Response**:
 - Status: `200 OK`
+- Body: Updated Worker profile response object.
 
 ---
 
@@ -110,6 +120,7 @@ Required (`Authorization: Bearer <sessionToken>`) for all endpoints.
 
 **Response**:
 - Status: `200 OK`
+- Body: Updated Worker profile response object.
 
 ---
 
@@ -128,3 +139,4 @@ Required (`Authorization: Bearer <sessionToken>`) for all endpoints.
 
 **Response**:
 - Status: `200 OK`
+- Body: Updated Worker profile response object.

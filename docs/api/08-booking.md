@@ -29,23 +29,41 @@ Required (`Authorization: Bearer <sessionToken>`) for all endpoints.
 
 **Required Role**: `CLIENT`
 
+**Path Parameters**:
+- `requirementId` (UUID): Workforce requirement ID.
+
 **Request**:
 ```json
 {
-  "providerType": "WORKER", // WORKER, TEAM, CONTRACTOR
+  "providerType": "WORKER",
+  "providerWorkerProfileId": "123e4567-e89b-12d3-a456-426614174000",
+  "providerTeamId": null,
+  "providerContractorProfileId": null,
+  "quantity": 1
+}
+```
+
+*Supported `providerType` Enum Values*: `WORKER`, `TEAM`, `CONTRACTOR`. Note: Exactly one corresponding profile/team ID field should match `providerType`.
+
+**Response**:
+- Status: `201 Created`
+- Body:
+```json
+{
+  "id": "123e4567-e89b-12d3-a456-426614174000",
+  "requirementId": "888e4567-e89b-12d3-a456-426614174000",
+  "providerType": "WORKER",
   "providerWorkerProfileId": "123e4567-e89b-12d3-a456-426614174000",
   "providerTeamId": null,
   "providerContractorProfileId": null,
   "quantity": 1,
-  "dailyRate": 900.00,
-  "startDate": "2026-09-01",
-  "endDate": "2026-09-15"
+  "status": "REQUESTED",
+  "requestedAt": "2026-08-26T10:00:00Z",
+  "respondedAt": null,
+  "createdAt": "2026-08-26T10:00:00Z",
+  "updatedAt": "2026-08-26T10:00:00Z"
 }
 ```
-
-**Response**:
-- Status: `201 Created`
-- Body: Booking response object.
 
 ---
 
@@ -57,6 +75,10 @@ Required (`Authorization: Bearer <sessionToken>`) for all endpoints.
 
 **Required Role**: `CLIENT`
 
+**Response**:
+- Status: `200 OK`
+- Body: `List<BookingResponse>`
+
 ---
 
 ### GET /api/bookings/{bookingId}
@@ -66,6 +88,10 @@ Required (`Authorization: Bearer <sessionToken>`) for all endpoints.
 **Authentication**: Required
 
 **Required Role**: `CLIENT`, `WORKER`, or `CONTRACTOR` (Must be booking participant)
+
+**Response**:
+- Status: `200 OK`
+- Body: BookingResponse object.
 
 ---
 
@@ -77,11 +103,15 @@ Required (`Authorization: Bearer <sessionToken>`) for all endpoints.
 
 **Required Role**: `WORKER` or `CONTRACTOR`
 
+**Response**:
+- Status: `200 OK`
+- Body: `List<BookingResponse>`
+
 ---
 
 ### POST /api/bookings/{bookingId}/accept
 
-**Purpose**: Service provider accepts incoming booking request. Performs pessimistic lock calculation on capacity. If accepted quantity meets requirement capacity, triggers `RequirementFulfilledEvent`.
+**Purpose**: Service provider accepts incoming booking request. Performs pessimistic lock calculation on capacity. If accepted quantity meets requirement capacity, triggers requirement state transition to `FULFILLED`.
 
 **Authentication**: Required
 
@@ -89,7 +119,7 @@ Required (`Authorization: Bearer <sessionToken>`) for all endpoints.
 
 **Response**:
 - Status: `200 OK`
-- Body: Updated booking response (`status: "ACCEPTED"`).
+- Body: Updated BookingResponse object (`status: "ACCEPTED"`).
 
 ---
 
@@ -103,4 +133,4 @@ Required (`Authorization: Bearer <sessionToken>`) for all endpoints.
 
 **Response**:
 - Status: `200 OK`
-- Body: Updated booking response (`status: "REJECTED"`).
+- Body: Updated BookingResponse object (`status: "REJECTED"`).

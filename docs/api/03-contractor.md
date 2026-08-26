@@ -24,16 +24,26 @@ Required (`Authorization: Bearer <sessionToken>`) for all endpoints.
 **Request**:
 ```json
 {
-  "companyName": "Apex Infrastructure",
-  "gstNumber": "27AAAAA0000A1Z5",
-  "experienceYears": 10,
-  "operatingCity": "Delhi"
+  "displayName": "Apex Infrastructure",
+  "location": "Delhi",
+  "description": "General civil and structural works contractor."
 }
 ```
 
 **Response**:
-- Status: `21 Created`
-- Body: Contractor profile object.
+- Status: `201 Created`
+- Body:
+```json
+{
+  "id": "123e4567-e89b-12d3-a456-426614174000",
+  "userId": "987e6543-e89b-12d3-a456-426614174000",
+  "displayName": "Apex Infrastructure",
+  "description": "General civil and structural works contractor.",
+  "location": "Delhi",
+  "createdAt": "2026-08-26T10:00:00Z",
+  "updatedAt": "2026-08-26T10:00:00Z"
+}
+```
 
 ---
 
@@ -47,6 +57,7 @@ Required (`Authorization: Bearer <sessionToken>`) for all endpoints.
 
 **Response**:
 - Status: `200 OK`
+- Body: Contractor profile response object.
 
 ---
 
@@ -58,8 +69,18 @@ Required (`Authorization: Bearer <sessionToken>`) for all endpoints.
 
 **Required Role**: `CONTRACTOR`
 
+**Request**:
+```json
+{
+  "displayName": "Apex Infrastructure Pvt Ltd",
+  "location": "Noida",
+  "description": "Specialized in large scale commercial construction."
+}
+```
+
 **Response**:
 - Status: `200 OK`
+- Body: Updated contractor profile response object.
 
 ---
 
@@ -82,6 +103,7 @@ Required (`Authorization: Bearer <sessionToken>`) for all endpoints.
 
 **Response**:
 - Status: `201 Created`
+- Body: ContractorWorkerResponse object.
 
 ---
 
@@ -95,13 +117,13 @@ Required (`Authorization: Bearer <sessionToken>`) for all endpoints.
 
 **Response**:
 - Status: `200 OK`
-- Body: Array of contractor worker associations.
+- Body: `List<ContractorWorkerResponse>`
 
 ---
 
 ### POST /api/contractors/workers/{workerProfileId}/end
 
-**Purpose**: Terminates an active worker-contractor association.
+**Purpose**: Terminates an active worker-contractor association by setting an `endsOn` date (Non-destructive).
 
 **Authentication**: Required
 
@@ -111,8 +133,9 @@ Required (`Authorization: Bearer <sessionToken>`) for all endpoints.
 - `workerProfileId` (UUID): Associated worker profile ID.
 
 **Query Parameters**:
-- `startsOn` (ISO Date, required): Association start date.
+- `startsOn` (ISO Date, required): Association start date matching active association.
 - `endsOn` (ISO Date, optional): End date.
 
 **Response**:
 - Status: `200 OK`
+- Body: Updated ContractorWorkerResponse object.

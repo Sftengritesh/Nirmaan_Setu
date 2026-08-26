@@ -15,13 +15,47 @@ Required (`Authorization: Bearer <sessionToken>`) for all endpoints.
 ## Endpoints
 
 ### GET /api/notifications
-Fetches paginated notifications for the authenticated user (`status` optional query param `UNREAD` / `READ`). `200 OK`.
+
+**Purpose**: Fetches paginated notifications for the authenticated user (`status` optional query param `UNREAD` / `READ`).
+
+**Authentication**: Required
+
+**Response**:
+- Status: `200 OK`
+- Body: `Page<NotificationResponse>` (Spring Data Page format, max size 50)
+
+---
 
 ### GET /api/notifications/unread-count
-Returns total unread notification count `{"unreadCount": 3}`. `200 OK`.
+
+**Purpose**: Returns total unread notification count.
+
+**Authentication**: Required
+
+**Response**:
+- Status: `200 OK`
+- Body: `{"unreadCount": 3}`
+
+---
 
 ### POST /api/notifications/{id}/read
-Marks a specific notification as `READ`. `200 OK`.
+
+**Purpose**: Marks a specific notification as `READ`.
+
+**Authentication**: Required
+
+**Response**:
+- Status: `200 OK`
+- Body: NotificationResponse object (`status: "READ"`).
+
+---
 
 ### POST /api/notifications/read-all
-Marks all unread notifications for current user as `READ` `{"updatedCount": 5}`. `200 OK`.
+
+**Purpose**: Marks all unread notifications for current user as `READ`.
+
+**Authentication**: Required
+
+**Response**:
+- Status: `200 OK`
+- Body: `{"markedReadCount": 5}`
