@@ -23,7 +23,6 @@ spring:
     locations: classpath:db/migration
     clean-disabled: true
     out-of-order: false
-    baseline-on-migrate: true
 
   jpa:
     hibernate:
