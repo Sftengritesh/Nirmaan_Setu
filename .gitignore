@@ -1,2 +1,26 @@
-.m2/
+# Maven
 target/
+.m2/
+*.jar
+*.war
+
+# IDEs and Editors
+.idea/
+*.iml
+.vscode/
+.classpath
+.project
+.settings/
+
+# Environment and Secrets
+.env
+*.env
+*.local
+
+# Logs
+*.log
+logs/
+
+# OS Specific
+.DS_Store
+Thumbs.db

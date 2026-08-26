@@ -1,20 +1,58 @@
+server:
+  port: ${NIRMAANSETU_SERVER_PORT:8080}
+  error:
+    include-stacktrace: never
+    include-message: never
+
 spring:
   application:
     name: nirmaansetu-backend
+
   datasource:
     url: ${NIRMAANSETU_DATABASE_URL:jdbc:postgresql://localhost:5432/nirmaansetu}
     username: ${NIRMAANSETU_DATABASE_USERNAME:nirmaansetu}
-    password: ${NIRMAANSETU_DATABASE_PASSWORD:}
+    password: ${NIRMAANSETU_DATABASE_PASSWORD:nirmaansetu_dev_pass}
+    hikari:
+      maximum-pool-size: 20
+      minimum-idle: 5
+      idle-timeout: 300000
+      connection-timeout: 20000
+      leak-detection-threshold: 5000
+
   flyway:
     locations: classpath:db/migration
+    clean-disabled: true
+    out-of-order: false
+    baseline-on-migrate: true
+
   jpa:
     hibernate:
       ddl-auto: validate
+    show-sql: false
+    properties:
+      hibernate:
+        format_sql: false
 
 auth:
   otp:
-    ttl: PT10M
+    ttl: ${NIRMAANSETU_OTP_TTL:PT10M}
     max-attempts: 5
     retention: P1D
   session:
-    ttl: PT12H
+    ttl: ${NIRMAANSETU_SESSION_TTL:PT12H}
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health
+  endpoint:
+    health:
+      show-details: never
+
+springdoc:
+  api-docs:
+    path: /v3/api-docs
+  swagger-ui:
+    path: /swagger-ui.html
+    operations-sorter: method
