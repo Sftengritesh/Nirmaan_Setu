@@ -139,7 +139,8 @@ export const WorkerProfilePage: React.FC = () => {
               <label>Availability Status</label>
               <select value={availabilityStatus} onChange={(e) => setAvailabilityStatus(e.target.value)}>
                 <option value="AVAILABLE">AVAILABLE</option>
-                <option value="BUSY">BUSY</option>
+                <option value="LIMITED">LIMITED</option>
+                <option value="UNAVAILABLE">UNAVAILABLE</option>
               </select>
             </div>
             <div>
