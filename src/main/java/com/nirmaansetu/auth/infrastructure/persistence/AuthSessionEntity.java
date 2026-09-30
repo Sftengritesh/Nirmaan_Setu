@@ -12,7 +12,9 @@ import java.util.UUID;
 public class AuthSessionEntity {
     @Id private UUID id;
     @Column(name = "user_id") private UUID userId;
-    @Column(name = "token_hash") private String tokenHash;
+    @Column(name = "token_hash", columnDefinition = "char(64)")
+    @org.hibernate.annotations.JdbcTypeCode(java.sql.Types.CHAR)
+    private String tokenHash;
     @Column(name = "expires_at") private Instant expiresAt;
     @Column(name = "revoked_at") private Instant revokedAt;
 

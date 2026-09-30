@@ -17,8 +17,20 @@ public class AppUserEntity {
     @Column(name = "updated_at") private Instant updatedAt;
 
     protected AppUserEntity() { }
-    public AppUserEntity(UUID id) { this.id = id; this.accountStatus = AccountStatus.ACTIVE.name(); }
-    public AppUserEntity(UUID id, AccountStatus accountStatus) { this.id = id; this.accountStatus = accountStatus.name(); }
+    public AppUserEntity(UUID id) {
+        this.id = id;
+        this.accountStatus = AccountStatus.ACTIVE.name();
+        Instant now = Instant.now();
+        this.createdAt = now;
+        this.updatedAt = now;
+    }
+    public AppUserEntity(UUID id, AccountStatus accountStatus) {
+        this.id = id;
+        this.accountStatus = accountStatus.name();
+        Instant now = Instant.now();
+        this.createdAt = now;
+        this.updatedAt = now;
+    }
     public UUID getId() { return id; }
     public AccountStatus getAccountStatus() { return AccountStatus.valueOf(accountStatus); }
 }

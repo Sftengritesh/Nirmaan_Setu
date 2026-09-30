@@ -25,6 +25,7 @@ spring:
     out-of-order: false
 
   jpa:
+    open-in-view: false
     hibernate:
       ddl-auto: validate
     show-sql: false
@@ -37,6 +38,7 @@ auth:
     ttl: ${NIRMAANSETU_OTP_TTL:PT10M}
     max-attempts: 5
     retention: P1D
+    dev-mode: ${NIRMAANSETU_OTP_DEV_MODE:true}
   session:
     ttl: ${NIRMAANSETU_SESSION_TTL:PT12H}
 

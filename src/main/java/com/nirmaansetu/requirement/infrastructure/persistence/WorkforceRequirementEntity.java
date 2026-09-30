@@ -49,6 +49,7 @@ public class WorkforceRequirementEntity {
     private BigDecimal budgetAmount;
 
     @Column(name = "currency_code", nullable = false, length = 3)
+    @org.hibernate.annotations.JdbcTypeCode(java.sql.Types.CHAR)
     private String currencyCode;
 
     @Column(name = "accommodation_available", nullable = false)

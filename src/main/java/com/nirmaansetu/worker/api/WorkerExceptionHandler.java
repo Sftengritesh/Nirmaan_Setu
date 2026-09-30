@@ -4,6 +4,8 @@ import com.nirmaansetu.worker.domain.WorkerProfileException;
 import java.util.Map;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.AccessDeniedException;
+import org.springframework.security.core.AuthenticationException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
@@ -19,6 +21,13 @@ public class WorkerExceptionHandler {
     @ExceptionHandler(MethodArgumentNotValidException.class)
     ResponseEntity<Map<String, String>> handleValidation(MethodArgumentNotValidException ex) {
         return error(HttpStatus.BAD_REQUEST, "INVALID_REQUEST", "Invalid request data.");
+    }
+
+    /** Re-throw security exceptions so the Spring Security filter chain can handle them
+     *  and return 401/403 with the correct JSON error body. */
+    @ExceptionHandler({AccessDeniedException.class, AuthenticationException.class})
+    ResponseEntity<?> handleSecurity(RuntimeException ex) throws RuntimeException {
+        throw ex;
     }
 
     @ExceptionHandler(Exception.class)

@@ -17,7 +17,7 @@ export const NotificationDrawer: React.FC<NotificationDrawerProps> = ({ onClose,
       const data = await notificationService.getMyNotifications(undefined, 0, 10);
       setNotifications(data.content);
     } catch (err) {
-      console.error(err);
+      // silently fail
     } finally {
       setLoading(false);
     }
@@ -33,7 +33,7 @@ export const NotificationDrawer: React.FC<NotificationDrawerProps> = ({ onClose,
       loadNotifications();
       onUpdate();
     } catch (err) {
-      console.error(err);
+      // silently fail
     }
   };
 
@@ -43,7 +43,7 @@ export const NotificationDrawer: React.FC<NotificationDrawerProps> = ({ onClose,
       loadNotifications();
       onUpdate();
     } catch (err) {
-      console.error(err);
+      // silently fail
     }
   };
 
@@ -53,57 +53,59 @@ export const NotificationDrawer: React.FC<NotificationDrawerProps> = ({ onClose,
         position: 'absolute',
         top: '2.75rem',
         right: 0,
-        width: '360px',
+        width: '380px',
         backgroundColor: 'var(--bg-surface)',
         border: '1px solid var(--border-color)',
         borderRadius: 'var(--radius-md)',
         boxShadow: 'var(--shadow-lg)',
         zIndex: 100,
-        padding: '1rem',
+        padding: '16px',
       }}
     >
-      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '0.75rem' }}>
-        <h4 style={{ fontSize: '1rem', fontWeight: 600 }}>Notifications</h4>
-        <div style={{ display: 'flex', gap: '0.5rem' }}>
+      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '12px' }}>
+        <h4 style={{ fontSize: '16px', fontWeight: 600, color: 'var(--text-primary)' }}>Notifications</h4>
+        <div style={{ display: 'flex', gap: '8px' }}>
           <button onClick={handleMarkAllRead} className="btn btn-secondary btn-sm" title="Mark all read">
             <CheckCheck size={14} /> Mark all read
           </button>
-          <button onClick={onClose} style={{ color: 'var(--text-muted)' }}><X size={16} /></button>
+          <button onClick={onClose} style={{ color: 'var(--text-muted)', padding: '4px' }} title="Close">
+            <X size={16} />
+          </button>
         </div>
       </div>
 
       {loading ? (
-        <div style={{ padding: '1rem', textAlign: 'center', color: 'var(--text-muted)' }}>Loading...</div>
+        <div style={{ padding: '16px', textAlign: 'center', color: 'var(--text-muted)' }}>Loading...</div>
       ) : notifications.length === 0 ? (
-        <div style={{ padding: '2rem 1rem', textAlign: 'center', color: 'var(--text-muted)' }}>
-          <BellOff size={24} style={{ marginBottom: '0.5rem' }} />
+        <div style={{ padding: '32px 16px', textAlign: 'center', color: 'var(--text-muted)' }}>
+          <BellOff size={24} style={{ marginBottom: '8px' }} />
           <div>No notifications</div>
         </div>
       ) : (
-        <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem', maxHeight: '320px', overflowY: 'auto' }}>
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '8px', maxHeight: '340px', overflowY: 'auto' }}>
           {notifications.map((n) => (
             <div
               key={n.id}
               style={{
-                padding: '0.75rem',
+                padding: '12px',
                 borderRadius: 'var(--radius-sm)',
-                backgroundColor: n.status === 'UNREAD' ? 'rgba(56, 189, 248, 0.08)' : 'var(--bg-card)',
+                backgroundColor: n.status === 'UNREAD' ? 'rgba(15, 32, 82, 0.04)' : 'var(--bg-primary)',
                 border: '1px solid var(--border-color)',
               }}
             >
               <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
-                <span style={{ fontWeight: 600, fontSize: '0.875rem' }}>{n.title}</span>
+                <span style={{ fontWeight: 600, fontSize: '14px', color: 'var(--text-primary)' }}>{n.title}</span>
                 {n.status === 'UNREAD' && (
                   <button
                     onClick={() => handleMarkAsRead(n.id)}
-                    style={{ fontSize: '0.75rem', color: 'var(--primary-color)' }}
+                    style={{ fontSize: '12px', color: 'var(--primary-color)', fontWeight: 600 }}
                   >
                     Mark read
                   </button>
                 )}
               </div>
-              <p style={{ fontSize: '0.8125rem', color: 'var(--text-secondary)', marginTop: '0.25rem' }}>{n.message}</p>
-              <span style={{ fontSize: '0.7rem', color: 'var(--text-muted)', display: 'block', marginTop: '0.375rem' }}>
+              <p style={{ fontSize: '13px', color: 'var(--text-secondary)', marginTop: '4px' }}>{n.message}</p>
+              <span style={{ fontSize: '11px', color: 'var(--text-muted)', display: 'block', marginTop: '6px' }}>
                 {new Date(n.createdAt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
               </span>
             </div>

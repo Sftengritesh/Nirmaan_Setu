@@ -6,6 +6,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+import org.springframework.security.access.AccessDeniedException;
+import org.springframework.security.core.AuthenticationException;
 
 @RestControllerAdvice(assignableTypes = DiscoveryController.class)
 public class DiscoveryExceptionHandler {
@@ -15,7 +17,12 @@ public class DiscoveryExceptionHandler {
         return error(HttpStatus.BAD_REQUEST, "DISCOVERY_ERROR", ex.getMessage());
     }
 
-    @ExceptionHandler(Exception.class)
+        /** Re-throw security exceptions so Spring Security handles 401/403 correctly. */
+    @ExceptionHandler({AccessDeniedException.class, AuthenticationException.class})
+    ResponseEntity<?> handleSecurity(RuntimeException ex) throws RuntimeException {
+        throw ex;
+    }
+@ExceptionHandler(Exception.class)
     ResponseEntity<Map<String, String>> handleGeneric(Exception ex) {
         return error(HttpStatus.INTERNAL_SERVER_ERROR, "INTERNAL_ERROR", "Discovery request failed.");
     }

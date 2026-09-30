@@ -35,25 +35,33 @@ export const Header: React.FC<HeaderProps> = ({
   return (
     <header className="navbar">
       <div className="brand-logo">
-        <span style={{ color: 'var(--primary-color)' }}>Nirmaan</span>Setu
+        <span style={{ color: '#B6C4FF' }}>Nirmaan</span>Setu
         <span className="brand-badge">MVP</span>
       </div>
 
       {currentUser && (
         <div className="nav-actions">
           {/* Active Role Selector */}
-          <div style={{ display: 'flex', gap: '0.375rem', alignItems: 'center' }}>
+          <div style={{ display: 'flex', gap: '6px', alignItems: 'center' }}>
             {currentUser.roles.map((role) => {
               const isActive = activeRole === role;
               return (
                 <button
                   key={role}
                   onClick={() => onSelectRole(role)}
-                  className={`badge badge-${role.toLowerCase()}`}
                   style={{
-                    opacity: isActive ? 1 : 0.5,
-                    border: isActive ? '1px solid currentColor' : '1px solid transparent',
+                    display: 'inline-flex',
+                    alignItems: 'center',
+                    gap: '4px',
+                    padding: '4px 10px',
+                    borderRadius: '9999px',
+                    fontSize: '12px',
+                    fontWeight: 600,
                     cursor: 'pointer',
+                    backgroundColor: isActive ? 'rgba(255,255,255,0.2)' : 'rgba(255,255,255,0.08)',
+                    color: isActive ? '#FFFFFF' : 'rgba(255,255,255,0.65)',
+                    border: isActive ? '1px solid rgba(255,255,255,0.35)' : '1px solid transparent',
+                    transition: 'all 0.2s ease',
                   }}
                 >
                   {getRoleIcon(role)}
@@ -67,8 +75,18 @@ export const Header: React.FC<HeaderProps> = ({
           <div style={{ position: 'relative' }}>
             <button
               onClick={() => setShowNotifications(!showNotifications)}
-              className="btn btn-secondary btn-sm"
-              style={{ position: 'relative', padding: '0.5rem' }}
+              style={{
+                position: 'relative',
+                padding: '8px',
+                borderRadius: 'var(--radius-sm)',
+                backgroundColor: 'rgba(255,255,255,0.1)',
+                color: '#FFFFFF',
+                border: '1px solid rgba(255,255,255,0.15)',
+                cursor: 'pointer',
+                display: 'flex',
+                alignItems: 'center',
+              }}
+              title="Notifications"
             >
               <Bell size={18} />
               {unreadCount > 0 && (
@@ -77,12 +95,13 @@ export const Header: React.FC<HeaderProps> = ({
                     position: 'absolute',
                     top: '-4px',
                     right: '-4px',
-                    backgroundColor: 'var(--accent-amber)',
-                    color: '#000',
-                    fontSize: '0.6875rem',
+                    backgroundColor: '#FBBF24',
+                    color: '#1B1B1F',
+                    fontSize: '11px',
                     fontWeight: 700,
                     borderRadius: '9999px',
-                    padding: '0.1rem 0.35rem',
+                    padding: '1px 5px',
+                    lineHeight: '14px',
                   }}
                 >
                   {unreadCount}
@@ -99,9 +118,25 @@ export const Header: React.FC<HeaderProps> = ({
           </div>
 
           {/* Phone Number & Logout */}
-          <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', fontSize: '0.875rem' }}>
-            <span style={{ color: 'var(--text-secondary)' }}>{currentUser.phoneNumber}</span>
-            <button onClick={onLogout} className="btn btn-secondary btn-sm" title="Log out">
+          <div style={{ display: 'flex', alignItems: 'center', gap: '12px', fontSize: '14px' }}>
+            <span style={{ color: 'rgba(255,255,255,0.7)' }}>{currentUser.phoneNumber}</span>
+            <button
+              onClick={onLogout}
+              style={{
+                display: 'inline-flex',
+                alignItems: 'center',
+                gap: '6px',
+                padding: '6px 12px',
+                borderRadius: 'var(--radius-sm)',
+                fontSize: '13px',
+                fontWeight: 600,
+                backgroundColor: 'rgba(255,255,255,0.1)',
+                color: '#FFFFFF',
+                border: '1px solid rgba(255,255,255,0.15)',
+                cursor: 'pointer',
+              }}
+              title="Log out"
+            >
               <LogOut size={16} />
               Exit
             </button>

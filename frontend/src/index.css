@@ -1,61 +1,102 @@
+/* ============================================================
+   NirmaanSetu — "Modern Industrial Trust" Design System
+   Source of truth: Stitch project 2322044668178832722
+   Color Mode: LIGHT | Fonts: Manrope (headlines) + Inter (body)
+   ============================================================ */
+
 :root {
-  --font-family: 'Google Sans', 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  /* ---- Typography ---- */
+  --font-headline: 'Manrope', -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-body: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
 
-  /* Color Palette - Stitch Neutral Clean Design */
-  --bg-primary: #0F172A;
-  --bg-surface: #1E293B;
-  --bg-surface-hover: #334155;
-  --bg-card: #1E293B;
-  --bg-input: #0F172A;
-  
-  --border-color: #334155;
-  --border-focus: #38BDF8;
+  /* ---- Stitch Color Tokens (Light Mode) ---- */
+  --bg-primary: #FBF8FD;          /* surface / background */
+  --bg-surface: #FFFFFF;           /* card / container surfaces */
+  --bg-surface-hover: #F5F3F8;    /* surface-container-low */
+  --bg-card: #FFFFFF;
+  --bg-input: #FFFFFF;
+  --bg-container: #EFEDF2;        /* surface-container */
+  --bg-container-high: #E9E7EC;   /* surface-container-high */
 
-  --text-primary: #F8FAFC;
-  --text-secondary: #94A3B8;
-  --text-muted: #64748B;
+  --border-color: #E5E7EB;        /* 1px card/row separators */
+  --border-focus: #354477;         /* on-primary-fixed-variant */
 
-  --primary-color: #0284C7;
-  --primary-hover: #0369A1;
-  --primary-light: rgba(2, 132, 199, 0.15);
+  --text-primary: #1B1B1F;        /* on-surface */
+  --text-secondary: #45464F;      /* on-surface-variant */
+  --text-muted: #757680;          /* outline */
 
-  --accent-teal: #0D9488;
-  --accent-purple: #8B5CF6;
+  /* ---- Primary: Deep Navy ---- */
+  --primary-color: #0F2052;       /* primary-container */
+  --primary-hover: #354477;       /* on-primary-fixed-variant */
+  --primary-light: rgba(15, 32, 82, 0.08);
+  --primary-text: #FFFFFF;
+
+  /* ---- Secondary: Neutral Slate ---- */
+  --secondary-color: #5F6F8F;
+  --secondary-light: rgba(95, 111, 143, 0.1);
+
+  /* ---- Semantic / Accent Colors ---- */
+  --accent-teal: #0D6E64;
+  --accent-purple: #6D391C;       /* on-tertiary-fixed-variant */
   --accent-amber: #D97706;
 
-  /* Role Badge Colors */
-  --role-client-bg: rgba(217, 119, 6, 0.15);
-  --role-client-text: #FBBF24;
-  --role-worker-bg: rgba(13, 148, 136, 0.15);
-  --role-worker-text: #2DD4BF;
-  --role-contractor-bg: rgba(139, 92, 246, 0.15);
-  --role-contractor-text: #C084FC;
-  --role-admin-bg: rgba(225, 29, 72, 0.15);
-  --role-admin-text: #FB7185;
+  --success-color: #16A34A;
+  --success-bg: rgba(22, 163, 74, 0.08);
+  --warning-color: #D97706;
+  --warning-bg: rgba(217, 119, 6, 0.08);
+  --error-color: #BA1A1A;         /* Stitch error */
+  --error-bg: rgba(186, 26, 26, 0.08);
 
-  /* Status Colors */
-  --status-open-bg: rgba(16, 185, 129, 0.15);
-  --status-open-text: #34D399;
-  --status-draft-bg: rgba(148, 163, 184, 0.15);
-  --status-draft-text: #94A3B8;
-  --status-accepted-bg: rgba(16, 185, 129, 0.15);
-  --status-accepted-text: #34D399;
-  --status-rejected-bg: rgba(239, 68, 68, 0.15);
-  --status-rejected-text: #F87171;
-  --status-pending-bg: rgba(245, 158, 11, 0.15);
-  --status-pending-text: #FBBF24;
-  --status-cancelled-bg: rgba(100, 116, 139, 0.15);
-  --status-cancelled-text: #94A3B8;
+  /* ---- Role Badge Colors ---- */
+  --role-client-bg: rgba(217, 119, 6, 0.1);
+  --role-client-text: #92400E;
+  --role-worker-bg: rgba(13, 110, 100, 0.1);
+  --role-worker-text: #065F53;
+  --role-contractor-bg: rgba(109, 57, 28, 0.1);
+  --role-contractor-text: #6D391C;
+  --role-admin-bg: rgba(186, 26, 26, 0.1);
+  --role-admin-text: #93000A;
 
-  --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.3);
-  --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.4), 0 2px 4px -2px rgba(0, 0, 0, 0.4);
-  --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.5), 0 4px 6px -4px rgba(0, 0, 0, 0.5);
+  /* ---- Status Badge Colors ---- */
+  --status-open-bg: rgba(22, 163, 74, 0.1);
+  --status-open-text: #15803D;
+  --status-draft-bg: rgba(117, 118, 128, 0.1);
+  --status-draft-text: #757680;
+  --status-accepted-bg: rgba(22, 163, 74, 0.1);
+  --status-accepted-text: #15803D;
+  --status-rejected-bg: rgba(186, 26, 26, 0.1);
+  --status-rejected-text: #BA1A1A;
+  --status-pending-bg: rgba(217, 119, 6, 0.1);
+  --status-pending-text: #B45309;
+  --status-cancelled-bg: rgba(117, 118, 128, 0.1);
+  --status-cancelled-text: #757680;
+  --status-verified-bg: rgba(22, 163, 74, 0.1);
+  --status-verified-text: #15803D;
+  --status-requested-bg: rgba(77, 92, 145, 0.1);
+  --status-requested-text: #354477;
 
-  --radius-sm: 6px;
-  --radius-md: 10px;
-  --radius-lg: 16px;
+  /* ---- Elevation (tonal layering, subtle shadows) ---- */
+  --shadow-sm: 0 1px 2px rgba(15, 32, 82, 0.04);
+  --shadow-md: 0 4px 12px rgba(15, 32, 82, 0.05);
+  --shadow-lg: 0 8px 24px rgba(15, 32, 82, 0.08);
+
+  /* ---- Shape ---- */
+  --radius-sm: 8px;    /* 0.5rem — standard buttons, inputs */
+  --radius-md: 12px;   /* 0.75rem — cards, containers */
+  --radius-lg: 16px;   /* 1rem — modals, large panels */
   --radius-full: 9999px;
+
+  /* ---- Spacing ---- */
+  --space-xs: 8px;
+  --space-sm: 12px;
+  --space-md: 16px;
+  --space-lg: 24px;
+  --space-xl: 32px;
 }
+
+/* ============================================================
+   Reset & Base
+   ============================================================ */
 
 * {
   box-sizing: border-box;
@@ -64,12 +105,14 @@
 }
 
 body {
-  font-family: var(--font-family);
+  font-family: var(--font-body);
   background-color: var(--bg-primary);
   color: var(--text-primary);
   min-height: 100vh;
   line-height: 1.5;
+  font-size: 14px;
   -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
 a {
@@ -77,40 +120,58 @@ a {
   text-decoration: none;
 }
 
+a:hover {
+  text-decoration: underline;
+}
+
 button {
-  font-family: inherit;
+  font-family: var(--font-body);
   cursor: pointer;
   border: none;
   background: none;
 }
 
+/* ============================================================
+   Form Controls — Stitch Input Field Spec
+   ============================================================ */
+
 input, select, textarea {
-  font-family: inherit;
+  font-family: var(--font-body);
   color: var(--text-primary);
   background-color: var(--bg-input);
   border: 1px solid var(--border-color);
   border-radius: var(--radius-sm);
-  padding: 0.625rem 0.875rem;
-  font-size: 0.9375rem;
+  padding: 10px 14px;
+  font-size: 14px;
+  line-height: 20px;
   outline: none;
-  transition: border-color 0.15s ease, box-shadow 0.15s ease;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
   width: 100%;
 }
 
 input:focus, select:focus, textarea:focus {
-  border-color: var(--border-focus);
-  box-shadow: 0 0 0 3px rgba(56, 189, 248, 0.15);
+  border-color: var(--primary-color);
+  box-shadow: 0 0 0 2px rgba(15, 32, 82, 0.1);
+}
+
+input::placeholder, textarea::placeholder {
+  color: var(--text-muted);
 }
 
 label {
   display: block;
-  font-size: 0.875rem;
-  font-weight: 500;
+  font-family: var(--font-body);
+  font-size: 14px;
+  font-weight: 600;
+  line-height: 20px;
   color: var(--text-secondary);
-  margin-bottom: 0.375rem;
+  margin-bottom: 6px;
 }
 
-/* Base Layout Containers */
+/* ============================================================
+   Layout Containers
+   ============================================================ */
+
 .app-container {
   display: flex;
   flex-direction: column;
@@ -122,14 +183,17 @@ label {
   max-width: 1280px;
   width: 100%;
   margin: 0 auto;
-  padding: 1.5rem;
+  padding: var(--space-lg);
 }
 
-/* Header & Navbar */
+/* ============================================================
+   Navbar — Stitch Top Navigation
+   ============================================================ */
+
 .navbar {
-  background-color: var(--bg-surface);
-  border-bottom: 1px solid var(--border-color);
-  padding: 0.875rem 1.5rem;
+  background-color: var(--primary-color);
+  color: #FFFFFF;
+  padding: 12px var(--space-lg);
   position: sticky;
   top: 0;
   z-index: 50;
@@ -141,142 +205,180 @@ label {
 .brand-logo {
   display: flex;
   align-items: center;
-  gap: 0.625rem;
+  gap: 10px;
+  font-family: var(--font-headline);
   font-weight: 700;
-  font-size: 1.25rem;
-  color: var(--text-primary);
+  font-size: 20px;
+  color: #FFFFFF;
+  letter-spacing: -0.01em;
 }
 
 .brand-badge {
-  background-color: var(--primary-light);
-  color: var(--primary-color);
-  font-size: 0.75rem;
-  padding: 0.125rem 0.5rem;
+  background-color: rgba(255, 255, 255, 0.15);
+  color: rgba(255, 255, 255, 0.9);
+  font-size: 11px;
+  padding: 2px 8px;
   border-radius: var(--radius-full);
   font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
 }
 
 .nav-actions {
   display: flex;
   align-items: center;
-  gap: 1rem;
+  gap: var(--space-md);
 }
 
-/* Badges */
+/* ============================================================
+   Badges — Stitch Verification & Status Badges
+   ============================================================ */
+
 .badge {
   display: inline-flex;
   align-items: center;
-  gap: 0.375rem;
-  padding: 0.25rem 0.625rem;
+  gap: 4px;
+  padding: 3px 10px;
   border-radius: var(--radius-full);
-  font-size: 0.75rem;
+  font-family: var(--font-body);
+  font-size: 12px;
   font-weight: 600;
-  text-transform: uppercase;
-  letter-spacing: 0.025em;
+  letter-spacing: 0.01em;
 }
 
-.badge-client { background-color: var(--role-client-bg); color: var(--role-client-text); }
-.badge-worker { background-color: var(--role-worker-bg); color: var(--role-worker-text); }
+.badge-client     { background-color: var(--role-client-bg); color: var(--role-client-text); }
+.badge-worker     { background-color: var(--role-worker-bg); color: var(--role-worker-text); }
 .badge-contractor { background-color: var(--role-contractor-bg); color: var(--role-contractor-text); }
-.badge-admin { background-color: var(--role-admin-bg); color: var(--role-admin-text); }
+.badge-admin      { background-color: var(--role-admin-bg); color: var(--role-admin-text); }
 
-.badge-open { background-color: var(--status-open-bg); color: var(--status-open-text); }
-.badge-draft { background-color: var(--status-draft-bg); color: var(--status-draft-text); }
-.badge-accepted { background-color: var(--status-accepted-bg); color: var(--status-accepted-text); }
-.badge-rejected { background-color: var(--status-rejected-bg); color: var(--status-rejected-text); }
-.badge-pending { background-color: var(--status-pending-bg); color: var(--status-pending-text); }
-.badge-cancelled { background-color: var(--status-cancelled-bg); color: var(--status-cancelled-text); }
+.badge-open       { background-color: var(--status-open-bg); color: var(--status-open-text); }
+.badge-draft      { background-color: var(--status-draft-bg); color: var(--status-draft-text); }
+.badge-accepted   { background-color: var(--status-accepted-bg); color: var(--status-accepted-text); }
+.badge-rejected   { background-color: var(--status-rejected-bg); color: var(--status-rejected-text); }
+.badge-pending    { background-color: var(--status-pending-bg); color: var(--status-pending-text); }
+.badge-cancelled  { background-color: var(--status-cancelled-bg); color: var(--status-cancelled-text); }
+.badge-verified   { background-color: var(--status-verified-bg); color: var(--status-verified-text); }
+.badge-requested  { background-color: var(--status-requested-bg); color: var(--status-requested-text); }
 
-/* Buttons */
+/* ============================================================
+   Buttons — Stitch Button Spec
+   Primary: Deep Navy bg, white text, no gradient
+   Secondary: Outlined with 1px border
+   ============================================================ */
+
 .btn {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  gap: 0.5rem;
-  padding: 0.625rem 1.25rem;
+  gap: 6px;
+  padding: 10px 20px;
   border-radius: var(--radius-sm);
-  font-size: 0.875rem;
+  font-family: var(--font-body);
+  font-size: 14px;
   font-weight: 600;
-  transition: all 0.15s ease;
+  line-height: 20px;
+  transition: background-color 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
   white-space: nowrap;
 }
 
 .btn-primary {
   background-color: var(--primary-color);
   color: #FFFFFF;
+  border: 1px solid var(--primary-color);
 }
 
 .btn-primary:hover {
   background-color: var(--primary-hover);
+  border-color: var(--primary-hover);
+}
+
+.btn-primary:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
 }
 
 .btn-secondary {
-  background-color: var(--bg-surface-hover);
-  color: var(--text-primary);
-  border: 1px solid var(--border-color);
+  background-color: transparent;
+  color: var(--secondary-color);
+  border: 1px solid var(--secondary-color);
 }
 
 .btn-secondary:hover {
-  background-color: #475569;
+  background-color: var(--secondary-light);
+}
+
+.btn-secondary:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
 }
 
 .btn-danger {
-  background-color: rgba(239, 68, 68, 0.15);
-  color: #F87171;
-  border: 1px solid rgba(239, 68, 68, 0.3);
+  background-color: var(--error-bg);
+  color: var(--error-color);
+  border: 1px solid rgba(186, 26, 26, 0.25);
 }
 
 .btn-danger:hover {
-  background-color: rgba(239, 68, 68, 0.25);
+  background-color: rgba(186, 26, 26, 0.15);
 }
 
 .btn-sm {
-  padding: 0.375rem 0.75rem;
-  font-size: 0.8125rem;
+  padding: 6px 12px;
+  font-size: 13px;
 }
 
-/* Card Components */
+/* ============================================================
+   Cards — Stitch Card Spec
+   White bg, 1px #E5E7EB border, 12px radius
+   Hover: soft shadow 0px 4px 12px rgba(15,32,82,0.05)
+   ============================================================ */
+
 .card {
   background-color: var(--bg-card);
   border: 1px solid var(--border-color);
   border-radius: var(--radius-md);
-  padding: 1.25rem;
-  box-shadow: var(--shadow-sm);
-  transition: transform 0.15s ease, border-color 0.15s ease;
+  padding: 20px;
+  transition: box-shadow 0.2s ease, border-color 0.2s ease;
 }
 
 .card:hover {
-  border-color: #475569;
+  box-shadow: var(--shadow-md);
 }
 
 .card-header {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  margin-bottom: 1rem;
+  margin-bottom: var(--space-md);
 }
 
 .card-title {
-  font-size: 1.125rem;
+  font-family: var(--font-headline);
+  font-size: 18px;
   font-weight: 600;
+  line-height: 24px;
   color: var(--text-primary);
 }
 
-/* Tabs */
+/* ============================================================
+   Tabs — Stitch Tabbed Navigation
+   ============================================================ */
+
 .tabs-container {
   display: flex;
-  gap: 0.5rem;
+  gap: 4px;
   border-bottom: 1px solid var(--border-color);
-  margin-bottom: 1.5rem;
+  margin-bottom: var(--space-lg);
 }
 
 .tab-btn {
-  padding: 0.75rem 1.25rem;
-  font-size: 0.9375rem;
+  padding: 12px 20px;
+  font-family: var(--font-body);
+  font-size: 14px;
   font-weight: 500;
-  color: var(--text-secondary);
+  color: var(--text-muted);
   border-bottom: 2px solid transparent;
-  transition: all 0.15s ease;
+  transition: color 0.2s ease, border-color 0.2s ease;
 }
 
 .tab-btn:hover {
@@ -289,17 +391,20 @@ label {
   font-weight: 600;
 }
 
-/* Modal Overlay */
+/* ============================================================
+   Modal — Stitch Modal Overlay
+   ============================================================ */
+
 .modal-overlay {
   position: fixed;
   inset: 0;
-  background-color: rgba(15, 23, 42, 0.75);
+  background-color: rgba(27, 27, 31, 0.5);
   backdrop-filter: blur(4px);
   display: flex;
   align-items: center;
   justify-content: center;
   z-index: 100;
-  padding: 1rem;
+  padding: var(--space-md);
 }
 
 .modal-content {
@@ -308,39 +413,110 @@ label {
   border-radius: var(--radius-lg);
   max-width: 560px;
   width: 100%;
-  padding: 1.5rem;
+  padding: var(--space-lg);
   box-shadow: var(--shadow-lg);
 }
 
-/* Alert / Banner */
+/* ============================================================
+   Alerts / Banners
+   ============================================================ */
+
 .alert {
-  padding: 0.875rem 1rem;
+  padding: 12px var(--space-md);
   border-radius: var(--radius-sm);
-  font-size: 0.875rem;
-  margin-bottom: 1rem;
+  font-size: 14px;
+  margin-bottom: var(--space-md);
   display: flex;
   align-items: center;
-  gap: 0.625rem;
+  gap: 10px;
 }
 
 .alert-error {
-  background-color: rgba(239, 68, 68, 0.15);
-  border: 1px solid rgba(239, 68, 68, 0.3);
-  color: #F87171;
+  background-color: var(--error-bg);
+  border: 1px solid rgba(186, 26, 26, 0.2);
+  color: var(--error-color);
 }
 
 .alert-success {
-  background-color: rgba(16, 185, 129, 0.15);
-  border: 1px solid rgba(16, 185, 129, 0.3);
-  color: #34D399;
+  background-color: var(--success-bg);
+  border: 1px solid rgba(22, 163, 74, 0.2);
+  color: var(--success-color);
 }
 
-/* Pagination */
+/* ============================================================
+   Pagination Bar
+   ============================================================ */
+
 .pagination-bar {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  margin-top: 1.5rem;
-  padding-top: 1rem;
+  margin-top: var(--space-lg);
+  padding-top: var(--space-md);
   border-top: 1px solid var(--border-color);
+}
+
+/* ============================================================
+   Utility: Section Headings (Manrope)
+   ============================================================ */
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-headline);
+  color: var(--text-primary);
+}
+
+h1 { font-size: 32px; font-weight: 700; line-height: 40px; letter-spacing: -0.02em; }
+h2 { font-size: 24px; font-weight: 600; line-height: 32px; }
+h3 { font-size: 18px; font-weight: 600; line-height: 24px; }
+
+/* ============================================================
+   Code / Monospace
+   ============================================================ */
+
+code {
+  font-family: 'JetBrains Mono', 'Fira Code', monospace;
+  font-size: 13px;
+  background-color: var(--bg-container);
+  padding: 2px 6px;
+  border-radius: 4px;
+  color: var(--primary-color);
+}
+
+/* ============================================================
+   Scrollbar (subtle, professional)
+   ============================================================ */
+
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--border-color);
+  border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--text-muted);
+}
+
+/* ============================================================
+   Responsive: Mobile-first for worker field usage
+   ============================================================ */
+
+@media (max-width: 768px) {
+  .main-content {
+    padding: var(--space-md);
+  }
+
+  .navbar {
+    padding: 10px var(--space-md);
+  }
+
+  h1 { font-size: 24px; line-height: 32px; }
+  h2 { font-size: 20px; line-height: 28px; }
 }
