@@ -25,8 +25,8 @@ import java.util.List;
 @EnableWebSecurity
 @EnableMethodSecurity
 public class AuthSecurityConfig {
-    @Value("${nirmaansetu.cors.allowed-origins:http://localhost:3000,http://localhost:3001,http://localhost:5173}")
-    private String allowedOrigins;
+    @Value("${nirmaansetu.cors.allowed-origin-patterns:http://localhost:*,https://*.pages.dev,https://*.nirmaansetu.in,capacitor://localhost,http://localhost}")
+    private String allowedOriginPatterns;
 
     @Bean public PasswordEncoder passwordEncoder() { return new BCryptPasswordEncoder(); }
     @Bean public java.time.Clock clock() { return java.time.Clock.systemUTC(); }
@@ -40,6 +40,7 @@ public class AuthSecurityConfig {
                 .requestMatchers(
                     "/api/auth/otp/start",
                     "/api/auth/otp/verify",
+                    "/api/uploads/**",
                     "/error",
                     "/actuator/health",
                     "/v3/api-docs/**",
@@ -57,11 +58,11 @@ public class AuthSecurityConfig {
     @Bean
     CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
-        List<String> origins = Arrays.stream(allowedOrigins.split(","))
+        List<String> originPatterns = Arrays.stream(allowedOriginPatterns.split(","))
             .map(String::trim)
             .filter(s -> !s.isEmpty())
             .toList();
-        configuration.setAllowedOrigins(origins);
+        configuration.setAllowedOriginPatterns(originPatterns);
         configuration.setAllowedMethods(List.of("GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"));
         configuration.setAllowedHeaders(List.of("Authorization", "Content-Type", "Accept", "Origin", "X-Requested-With"));
         configuration.setAllowCredentials(true);

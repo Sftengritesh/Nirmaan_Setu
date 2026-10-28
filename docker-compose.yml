@@ -1,22 +1,46 @@
-version: '3.8'
-
 services:
   postgres:
-    image: postgres:16-alpine
+    image: postgres:17-alpine
     container_name: nirmaansetu-postgres
+    restart: always
     environment:
-      POSTGRES_DB: nirmaansetu
-      POSTGRES_USER: nirmaansetu
-      POSTGRES_PASSWORD: nirmaansetu_dev_pass
+      POSTGRES_DB: ${NIRMAANSETU_DATABASE_NAME:-nirmaansetu}
+      POSTGRES_USER: ${NIRMAANSETU_DATABASE_USERNAME:-nirmaansetu}
+      POSTGRES_PASSWORD: ${NIRMAANSETU_DATABASE_PASSWORD:-nirmaansetu_secure_prod_pass}
     ports:
       - "5432:5432"
     volumes:
-      - pgdata:/var/lib/postgresql/data
+      - postgres_data:/var/lib/postgresql/data
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U nirmaansetu -d nirmaansetu"]
-      interval: 5s
+      test: ["CMD-SHELL", "pg_isready -U ${NIRMAANSETU_DATABASE_USERNAME:-nirmaansetu} -d ${NIRMAANSETU_DATABASE_NAME:-nirmaansetu}"]
+      interval: 10s
       timeout: 5s
       retries: 5
 
+  backend:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: nirmaansetu-backend
+    restart: always
+    depends_on:
+      postgres:
+        condition: service_healthy
+    ports:
+      - "8080:8080"
+    environment:
+      NIRMAANSETU_SERVER_PORT: 8080
+      NIRMAANSETU_DATABASE_URL: jdbc:postgresql://postgres:5432/${NIRMAANSETU_DATABASE_NAME:-nirmaansetu}
+      NIRMAANSETU_DATABASE_USERNAME: ${NIRMAANSETU_DATABASE_USERNAME:-nirmaansetu}
+      NIRMAANSETU_DATABASE_PASSWORD: ${NIRMAANSETU_DATABASE_PASSWORD:-nirmaansetu_secure_prod_pass}
+      NIRMAANSETU_UPLOAD_DIR: /var/data/uploads
+      NIRMAANSETU_OTP_DEV_MODE: ${NIRMAANSETU_OTP_DEV_MODE:-false}
+      NIRMAANSETU_SMS_PROVIDER: ${NIRMAANSETU_SMS_PROVIDER:-fast2sms}
+      NIRMAANSETU_SMS_API_KEY: ${NIRMAANSETU_SMS_API_KEY:-}
+      NIRMAANSETU_CORS_ALLOWED_ORIGIN_PATTERNS: ${NIRMAANSETU_CORS_ALLOWED_ORIGIN_PATTERNS:-https://*.pages.dev,https://*.nirmaansetu.in,capacitor://localhost,http://localhost:*}
+    volumes:
+      - backend_uploads:/var/data/uploads
+
 volumes:
-  pgdata:
+  postgres_data:
+  backend_uploads:

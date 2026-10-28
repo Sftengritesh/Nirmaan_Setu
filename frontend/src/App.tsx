@@ -1,97 +1,108 @@
-import React, { useEffect, useState } from 'react';
-import { authService, CurrentUserResponse, AuthResponse } from './services/authService';
-import { notificationService } from './services/notificationService';
+import React, { useState, useEffect } from 'react';
+import { Capacitor } from '@capacitor/core';
+import { App as CapacitorApp } from '@capacitor/app';
+import { AuthProvider, useAuth } from './context/AuthContext';
 import { Header } from './components/layout/Header';
-import { LoginPage } from './pages/auth/LoginPage';
-import { DashboardPage } from './pages/dashboard/DashboardPage';
+import { AuthPage } from './pages/auth/AuthPage';
+import { AdminDashboard } from './pages/admin/AdminDashboard';
+import { WorkerWorkspace } from './pages/worker/WorkerWorkspace';
+import { ClientPortal } from './pages/client/ClientPortal';
+import { ContractorPortal } from './pages/contractor/ContractorPortal';
+import { PrivacyPolicy } from './pages/legal/PrivacyPolicy';
+import { LoadingSpinner } from './components/common/LoadingSpinner';
+import { Shield } from 'lucide-react';
 
-export const App: React.FC = () => {
-  const [currentUser, setCurrentUser] = useState<CurrentUserResponse | null>(null);
-  const [activeRole, setActiveRole] = useState<string>('CLIENT');
-  const [loading, setLoading] = useState(true);
-  const [unreadCount, setUnreadCount] = useState(0);
+const MainApp: React.FC = () => {
+  const { currentUser, activeRole, loading } = useAuth();
+  const [showPrivacyPolicy, setShowPrivacyPolicy] = useState(false);
 
-  const loadSession = async () => {
-    setLoading(true);
-    try {
-      const user = await authService.getMe();
-      setCurrentUser(user);
-      if (user.roles && user.roles.length > 0) {
-        setActiveRole(user.roles[0]);
-      }
-      fetchUnreadCount();
-    } catch (err) {
-      setCurrentUser(null);
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  const fetchUnreadCount = async () => {
-    try {
-      const res = await notificationService.getUnreadCount();
-      setUnreadCount(res.unreadCount);
-    } catch (err) {
-      // Ignore if not logged in
-    }
-  };
-
+  // Native Android hardware Back Button handler
   useEffect(() => {
-    loadSession();
-  }, []);
+    if (Capacitor.isNativePlatform()) {
+      const backListener = CapacitorApp.addListener('backButton', ({ canGoBack }) => {
+        if (showPrivacyPolicy) {
+          setShowPrivacyPolicy(false);
+        } else if (canGoBack) {
+          window.history.back();
+        } else {
+          CapacitorApp.exitApp();
+        }
+      });
 
-  // Poll unread notifications count every 30 seconds
-  useEffect(() => {
-    if (!currentUser) return;
-    const interval = setInterval(fetchUnreadCount, 30000);
-    return () => clearInterval(interval);
-  }, [currentUser]);
-
-  const handleLoginSuccess = (authData: AuthResponse) => {
-    const user: CurrentUserResponse = {
-      userId: authData.userId,
-      phoneNumber: authData.phoneNumber,
-      roles: authData.roles,
-    };
-    setCurrentUser(user);
-    if (user.roles.length > 0) {
-      setActiveRole(user.roles[0]);
+      return () => {
+        backListener.then((handle) => handle.remove());
+      };
     }
-    fetchUnreadCount();
-  };
-
-  const handleLogout = async () => {
-    await authService.logout();
-    setCurrentUser(null);
-  };
+  }, [showPrivacyPolicy]);
 
   if (loading) {
     return (
-      <div style={{ display: 'flex', height: '100vh', alignItems: 'center', justifyContent: 'center', color: 'var(--text-muted)' }}>
-        Loading NirmaanSetu application...
+      <div style={{ display: 'flex', height: '100vh', alignItems: 'center', justifyContent: 'center' }}>
+        <LoadingSpinner message="Initializing NirmaanSetu Production Platform..." size={36} />
+      </div>
+    );
+  }
+
+  if (showPrivacyPolicy) {
+    return (
+      <div className="app-container">
+        <Header />
+        <main className="main-content">
+          <PrivacyPolicy onBack={() => setShowPrivacyPolicy(false)} />
+        </main>
       </div>
     );
   }
 
   return (
-    <div className="app-container">
-      <Header
-        currentUser={currentUser}
-        activeRole={activeRole}
-        onSelectRole={(role) => setActiveRole(role)}
-        onLogout={handleLogout}
-        unreadCount={unreadCount}
-        onNotificationRead={fetchUnreadCount}
-      />
-
-      <main className="main-content">
+    <div className="app-container" style={{ display: 'flex', flexDirection: 'column', minHeight: '100vh' }}>
+      <Header />
+      <main className="main-content" style={{ maxWidth: '1240px', width: '100%', margin: '0 auto', padding: '1.5rem 1rem', flex: 1, boxSizing: 'border-box' }}>
         {!currentUser ? (
-          <LoginPage onLoginSuccess={handleLoginSuccess} />
+          <AuthPage />
         ) : (
-          <DashboardPage currentUser={currentUser} activeRole={activeRole} />
+          <>
+            {activeRole === 'ADMIN' && <AdminDashboard />}
+            {activeRole === 'WORKER' && <WorkerWorkspace />}
+            {activeRole === 'CLIENT' && <ClientPortal />}
+            {activeRole === 'CONTRACTOR' && <ContractorPortal />}
+          </>
         )}
       </main>
+
+      {/* Production Footer with Play Store & Compliance Links */}
+      <footer
+        style={{
+          borderTop: '1px solid var(--border-color)',
+          backgroundColor: 'var(--bg-surface)',
+          padding: '1rem',
+          textAlign: 'center',
+          fontSize: '0.8rem',
+          color: 'var(--text-muted)',
+          marginTop: 'auto',
+        }}
+      >
+        <div style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center', alignItems: 'center', gap: '1.5rem', maxWidth: '1240px', margin: '0 auto' }}>
+          <span>© 2026 NirmaanSetu. All rights reserved.</span>
+          <button
+            onClick={() => setShowPrivacyPolicy(true)}
+            style={{ background: 'none', border: 'none', color: 'var(--primary-color)', cursor: 'pointer', fontSize: '0.8rem', textDecoration: 'underline' }}
+          >
+            Privacy Policy & Data Safety
+          </button>
+          <span>Support: +91 98765 43210</span>
+          <span>v1.0.0 (Production)</span>
+        </div>
+      </footer>
     </div>
+  );
+};
+
+export const App: React.FC = () => {
+  return (
+    <AuthProvider>
+      <MainApp />
+    </AuthProvider>
   );
 };
 

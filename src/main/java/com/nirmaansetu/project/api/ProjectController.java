@@ -9,17 +9,10 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/projects")
-@PreAuthorize("hasRole('CLIENT')")
 public class ProjectController {
 
     private final ProjectService projectService;
@@ -29,6 +22,7 @@ public class ProjectController {
     }
 
     @PostMapping
+    @PreAuthorize("hasRole('CLIENT')")
     public ResponseEntity<ProjectResponse> createProject(
             @AuthenticationPrincipal AuthPrincipal principal,
             @Valid @RequestBody CreateProjectRequest request) {
@@ -37,11 +31,19 @@ public class ProjectController {
     }
 
     @GetMapping
+    @PreAuthorize("hasRole('CLIENT')")
     public List<ProjectResponse> getMyProjects(@AuthenticationPrincipal AuthPrincipal principal) {
         return projectService.getMyProjects(principal.userId());
     }
 
+    @GetMapping("/all")
+    @PreAuthorize("hasAnyRole('ADMIN', 'CONTRACTOR')")
+    public List<ProjectResponse> getAllProjects() {
+        return projectService.listAllProjects();
+    }
+
     @GetMapping("/{projectId}")
+    @PreAuthorize("hasAnyRole('CLIENT', 'ADMIN', 'CONTRACTOR')")
     public ProjectResponse getProjectById(
             @AuthenticationPrincipal AuthPrincipal principal,
             @PathVariable UUID projectId) {
@@ -49,6 +51,7 @@ public class ProjectController {
     }
 
     @PutMapping("/{projectId}")
+    @PreAuthorize("hasRole('CLIENT')")
     public ProjectResponse updateProject(
             @AuthenticationPrincipal AuthPrincipal principal,
             @PathVariable UUID projectId,

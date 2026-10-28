@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">NirmaanSetu</string>
+    <string name="title_activity_main">NirmaanSetu</string>
+    <string name="package_name">in.nirmaansetu.app</string>
+    <string name="custom_url_scheme">in.nirmaansetu.app</string>
+</resources>

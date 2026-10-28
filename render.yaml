@@ -1,0 +1,35 @@
+services:
+  - type: web
+    name: nirmaansetu-backend
+    env: docker
+    dockerfilePath: Dockerfile
+    plan: standard
+    region: singapore
+    healthCheckPath: /actuator/health
+    disk:
+      name: nirmaansetu-uploads
+      mountPath: /var/data/uploads
+      sizeGB: 10
+    envVars:
+      - key: NIRMAANSETU_SERVER_PORT
+        value: 8080
+      - key: NIRMAANSETU_UPLOAD_DIR
+        value: /var/data/uploads
+      - key: NIRMAANSETU_DATABASE_URL
+        fromDatabase:
+          name: nirmaansetu-db
+          property: connectionString
+      - key: NIRMAANSETU_OTP_DEV_MODE
+        value: "false"
+      - key: NIRMAANSETU_SMS_PROVIDER
+        value: fast2sms
+      - key: NIRMAANSETU_SMS_API_KEY
+        sync: false
+      - key: NIRMAANSETU_CORS_ALLOWED_ORIGIN_PATTERNS
+        value: "https://*.pages.dev,https://*.nirmaansetu.in,capacitor://localhost"
+
+databases:
+  - name: nirmaansetu-db
+    plan: standard
+    region: singapore
+    postgresMajorVersion: 17

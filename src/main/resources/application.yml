@@ -42,6 +42,17 @@ auth:
   session:
     ttl: ${NIRMAANSETU_SESSION_TTL:PT12H}
 
+nirmaansetu:
+  upload:
+    dir: ${NIRMAANSETU_UPLOAD_DIR:uploads}
+  cors:
+    allowed-origin-patterns: ${NIRMAANSETU_CORS_ALLOWED_ORIGIN_PATTERNS:http://localhost:*,https://*.pages.dev,https://*.nirmaansetu.in,capacitor://localhost,http://localhost}
+  sms:
+    provider: ${NIRMAANSETU_SMS_PROVIDER:dev}
+    api-key: ${NIRMAANSETU_SMS_API_KEY:}
+    sender-id: ${NIRMAANSETU_SMS_SENDER_ID:}
+    template-id: ${NIRMAANSETU_SMS_TEMPLATE_ID:}
+
 management:
   endpoints:
     web:

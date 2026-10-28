@@ -62,6 +62,11 @@ public class WorkerService {
         return toResponse(entity);
     }
 
+    @Transactional(readOnly = true)
+    public List<WorkerProfileResponse> listAllWorkers() {
+        return workerProfileRepository.findAll().stream().map(this::toResponse).toList();
+    }
+
     @Transactional
     public WorkerProfileResponse updateProfile(UUID userId, UpdateWorkerProfileRequest request) {
         WorkerProfileEntity entity = workerProfileRepository.findByUserId(userId)

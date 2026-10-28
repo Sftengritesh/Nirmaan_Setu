@@ -18,12 +18,16 @@ public class AuthProperties {
         @NotNull private Duration ttl = Duration.ofMinutes(10);
         @NotNull private Duration retention = Duration.ofDays(1);
         private int maxAttempts = 5;
+        private boolean devMode = true;
+
         public Duration getTtl() { return ttl; }
         public void setTtl(Duration ttl) { this.ttl = ttl; }
         public Duration getRetention() { return retention; }
         public void setRetention(Duration retention) { this.retention = retention; }
         public int getMaxAttempts() { return maxAttempts; }
         public void setMaxAttempts(int maxAttempts) { this.maxAttempts = maxAttempts; }
+        public boolean isDevMode() { return devMode; }
+        public void setDevMode(boolean devMode) { this.devMode = devMode; }
     }
 
     public static class Session {

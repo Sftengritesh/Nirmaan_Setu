@@ -18,9 +18,9 @@ public class AuthController {
     public AuthController(AuthService authService) { this.authService = authService; }
 
     @PostMapping("/otp/start")
-    public ResponseEntity<Void> startOtp(@Valid @RequestBody StartOtpRequest request) {
-        authService.startOtp(request.phoneNumber());
-        return ResponseEntity.accepted().build();
+    public ResponseEntity<StartOtpResponse> startOtp(@Valid @RequestBody StartOtpRequest request) {
+        String devOtp = authService.startOtp(request.phoneNumber());
+        return ResponseEntity.accepted().body(new StartOtpResponse(devOtp != null, devOtp));
     }
 
     @PostMapping("/otp/verify")
@@ -31,6 +31,13 @@ public class AuthController {
     @GetMapping("/me")
     public CurrentUserResponse currentUser(@AuthenticationPrincipal AuthPrincipal principal) {
         return CurrentUserResponse.from(principal);
+    }
+
+    @PostMapping("/onboard")
+    public CurrentUserResponse onboard(
+            @AuthenticationPrincipal AuthPrincipal principal,
+            @Valid @RequestBody OnboardUserRequest request) {
+        return authService.onboardUser(principal.userId(), request.role(), request.displayName(), request.location());
     }
 
     @PostMapping("/logout")

@@ -1,0 +1,28 @@
+{
+  "short_name": "NirmaanSetu",
+  "name": "NirmaanSetu - Workforce & Construction Platform",
+  "icons": [
+    {
+      "src": "/favicon.ico",
+      "sizes": "64x64 32x32 24x24 16x16",
+      "type": "image/x-icon"
+    },
+    {
+      "src": "/icon-192.png",
+      "type": "image/png",
+      "sizes": "192x192"
+    },
+    {
+      "src": "/icon-512.png",
+      "type": "image/png",
+      "sizes": "512x512"
+    }
+  ],
+  "start_url": "/",
+  "background_color": "#0F2052",
+  "theme_color": "#0F2052",
+  "display": "standalone",
+  "orientation": "portrait-primary",
+  "categories": ["business", "productivity", "construction"],
+  "description": "Enterprise construction workforce, GPS attendance verification, material inventory, and project tracking."
+}

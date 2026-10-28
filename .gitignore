@@ -18,6 +18,17 @@ frontend/dist/
 .project
 .settings/
 
+# Uploads and temporary data
+uploads/
+*.dump
+
+# Android build outputs and local configuration
+frontend/android/.gradle/
+frontend/android/build/
+frontend/android/app/build/
+frontend/android/local.properties
+frontend/android/.idea/
+
 # Environment and Secrets
 .env
 *.env

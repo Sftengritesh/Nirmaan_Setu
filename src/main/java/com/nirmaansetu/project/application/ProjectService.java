@@ -59,6 +59,11 @@ public class ProjectService {
     }
 
     @Transactional(readOnly = true)
+    public List<ProjectResponse> listAllProjects() {
+        return projectRepository.findAll().stream().map(this::toResponse).toList();
+    }
+
+    @Transactional(readOnly = true)
     public ProjectResponse getProjectById(UUID userId, UUID projectId) {
         ProjectEntity project = findProjectAndVerifyOwner(userId, projectId);
         return toResponse(project);

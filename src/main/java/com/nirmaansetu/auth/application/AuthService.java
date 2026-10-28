@@ -1,5 +1,6 @@
 package com.nirmaansetu.auth.application;
 
+import com.nirmaansetu.auth.api.CurrentUserResponse;
 import com.nirmaansetu.auth.domain.AccountStatus;
 import com.nirmaansetu.auth.domain.AuthFailureException;
 import com.nirmaansetu.auth.domain.AuthRole;
@@ -52,37 +53,17 @@ public class AuthService {
         this.transactionTemplate = new TransactionTemplate(transactionManager);
     }
 
-    /**
-     * Initiates an OTP verification flow.
-     * 
-     * WARNING: Production deployment must introduce a request rate limiting boundary (e.g. at the API Gateway or 
-     * web filter layer) to prevent OTP/SMS start abuse before enabling any paid SMS provider.
-     * The current implementation deletes expired OTP challenges during generation but does NOT provide 
-     * production-grade rate limiting.
-     */
     @Transactional
-    public void startOtp(String rawPhoneNumber) {
+    public String startOtp(String rawPhoneNumber) {
         String phone = phoneNumberNormalizer.normalizeIndian(rawPhoneNumber);
         Instant now = clock.instant();
         challengeRepository.deleteByCreatedAtBefore(now.minus(properties.getOtp().getRetention()));
         String code = otpCodeGenerator.generate();
         challengeRepository.save(new AuthOtpChallengeEntity(UUID.randomUUID(), phone, passwordEncoder.encode(code), now.plus(properties.getOtp().getTtl()), now));
         otpDelivery.deliver(phone, code);
+        return properties.getOtp().isDevMode() ? code : null;
     }
 
-    /**
-     * Verifies the provided OTP code against the latest challenge for the normalized phone number.
-     * 
-     * Split into two distinct database transactions:
-     * 1. OTP Verification: retrieves challenge with pessimistic write lock, checks attempt limits/codes,
-     *    increments attempts on mismatch, and commits immediately to safely persist attempts.
-     * 2. Identity & Session Setup: checks/registers phone identity, retrieves user account status,
-     *    and saves the user session token hash. Any uniqueness/database failures here will roll back
-     *    completely, preventing partial authentication states.
-     * 
-     * Note: A newly created user starts with zero roles. No roles (CLIENT, WORKER, CONTRACTOR, ADMIN) are
-     * assigned automatically during registration. Role information is never trusted from the client.
-     */
     public AuthSessionResult verifyOtp(String rawPhoneNumber, String code) {
         String phone = phoneNumberNormalizer.normalizeIndian(rawPhoneNumber);
         Instant now = clock.instant();
@@ -128,6 +109,17 @@ public class AuthService {
         } catch (Exception ex) {
             throw new AuthFailureException("Authentication could not be completed.");
         }
+    }
+
+    @Transactional
+    public CurrentUserResponse onboardUser(UUID userId, String roleName, String displayName, String location) {
+        String cleanRole = roleName.toUpperCase().trim();
+        AuthRole role = AuthRole.valueOf(cleanRole);
+        if (role == AuthRole.ADMIN) {
+            throw new IllegalArgumentException("Cannot self-assign ADMIN role.");
+        }
+        userRoleRepository.assignRole(userId, role.name());
+        return new CurrentUserResponse(userId, rolesFor(userId));
     }
 
     @Transactional
